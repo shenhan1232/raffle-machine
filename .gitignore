@@ -7,3 +7,4 @@ Thumbs.db
 ~$*
 .superpowers/
 .claude/settings.local.json
+*.docx
