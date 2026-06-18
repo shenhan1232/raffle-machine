@@ -1,70 +1,70 @@
-# 抽奖系统 (Lottery System)
+# 抽奖系统
 
-Electron desktop lottery/raffle app — import name lists, randomly draw winners with animated character-by-character reveal.
+基于 Electron 的桌面抽奖程序——导入名单文件，随机抽取获奖者，以逐字揭晓动画展示结果。
 
-## Features
+## 功能
 
-- Import name lists from TXT, CSV, or Excel (.xlsx) files
-- Smart column detection for CSV/Excel — auto-finds the name column even without headers
-- Drag-and-drop or click-to-import file input
-- Configurable draw count and repeat mode
-- Character-by-character animated reveal with Tactical HUD visual theme
-- Multi-list management — switch between multiple imported lists
-- Persistent state via localStorage — survives app restart
-- Portable Windows .exe packaging — no installation required
+- 支持 TXT、CSV、Excel（.xlsx）三种格式的名单导入
+- CSV/Excel 智能列检测——无需表头也能自动识别姓名列
+- 点击导入或直接拖拽文件到窗口
+- 可配置每次抽取人数，支持允许/禁止重复抽取
+- 逐字揭晓动画（战术 HUD 风格视觉主题）
+- 多名单管理——可同时加载多份名单，自由切换
+- localStorage 持久化——关闭程序后数据不丢失
+- 打包为单个便携 .exe 文件，无需安装即可运行
 
-## Quick Start
+## 快速开始
 
 ```bash
-# Install dependencies
+# 安装依赖
 npm install
 
-# Run in development (Windows — use cmd.exe, not bash)
+# 开发模式运行（Windows 下必须用 cmd.exe，不能用 Git Bash）
 cmd.exe /c "start /d . node_modules\electron\dist\electron.exe ."
 ```
 
-## Build
+## 打包
 
 ```bash
-# Set mirrors if in China
+# 国内需设置镜像源
 export ELECTRON_MIRROR="https://npmmirror.com/mirrors/electron/"
 export ELECTRON_BUILDER_BINARIES_MIRROR="https://npmmirror.com/mirrors/electron-builder-binaries/"
 
-# Build portable .exe
+# 打包为便携 .exe
 npx electron-builder --win portable
 ```
 
-Output: `build/抽奖系统 1.0.0.exe` (~72MB, self-contained)
+输出：`build/抽奖系统 1.0.0.exe`（约 72MB，自包含，免安装）
 
-## Project Structure
+## 项目结构
 
 ```
-main.js              # Electron main process — window, IPC, file I/O
-preload.js           # contextBridge — secure API exposure
+main.js              # Electron 主进程——窗口创建、IPC 通信、文件读写
+preload.js           # contextBridge 安全桥接——向渲染进程暴露 API
 renderer/
-  index.html         # Entry point with CSP headers
-  app.js             # Main controller — UI, state, events
-  animation.js       # AnimationEngine — per-character reveal
-  lottery.js         # Pure random draw function
-  file-import.js     # Name parser with smart column detection
-  audio.js           # MP3 playback + Web Audio API fallback
-  style.css          # Tactical HUD theme and animation keyframes
+  index.html         # 入口页面，含 CSP 安全策略
+  app.js             # 主控制器——UI 构建、事件绑定、状态管理、持久化
+  animation.js       # AnimationEngine 类——逐字揭晓动画（搜索→闪烁→揭晓）
+  lottery.js         # 纯随机抽取函数，基于 Fisher-Yates 思想
+  file-import.js     # 智能名单解析器——表头匹配 + 列打分算法
+  audio.js           # MP3 音效播放 + Web Audio API 合成降级方案
+  style.css          # 战术 HUD 暗色主题 + CSS 动画关键帧
 assets/
-  icon.png           # App icon
-  click.mp3          # Reveal sound effect
+  icon.png           # 应用图标
+  click.mp3          # 揭晓音效
 ```
 
-## Usage
+## 使用说明
 
-1. Launch the app
-2. Import a name list — click the drop zone or drag a file onto it
-3. Set the number of winners to draw
-4. Optionally enable "allow repeat"
-5. Click "开始抽取" to draw
-6. Watch the animated reveal
-7. View winner history in the left panel
-8. Manage multiple lists from the right panel
+1. 启动程序
+2. 导入名单——点击虚线区域选择文件，或直接拖拽文件到窗口
+3. 设置每次抽取人数
+4. 可选勾选"允许重复抽取"
+5. 点击"开始抽取"
+6. 观看逐字揭晓动画
+7. 左侧面板查看中奖记录
+8. 右侧面板管理多份名单
 
-## AI-Assisted Development
+## 开发说明
 
-This project was developed using Claude Code (Anthropic) as part of a university software engineering course on AI-assisted software prototyping. See `CLAUDE.md` for project documentation.
+本项目使用 Claude Code（Anthropic）辅助开发，是软件工程课程"AI辅助下的轻量级软件原型开发实践"的实验项目。详见 `CLAUDE.md`。
